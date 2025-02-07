@@ -6,10 +6,10 @@ from wlinreg import *
 # Calibration data (Voltage -> Magnetic Field)
 measurements = 10
 
-V_offset = np.arange(1.00, float(measurements - 1), 1)
+V_offset = np.arange(1.00, float(measurements - 3), 1)
 
-T1 = np.array([10.9, 23.3, 35.4, 47.0, 58.3, 68.9, 82.9, 89.8]) * 1e-4  # Tesla
-T2 = np.array([11.0, 22.7, 34.4, 46.0, 57.8, 69.0, 81.0, 90.2]) * 1e-4  # Tesla
+T1 = np.array([10.9, 23.3, 35.4, 47.0, 58.3, 68.9]) * 1e-4  # Tesla
+T2 = np.array([11.0, 22.7, 34.4, 46.0, 57.8, 69.0]) * 1e-4  # Tesla
 
 T_avg = (T1 + T2) / 2
 T_avg_error = np.sqrt((0.2e-4)**2 + (0.2e-4)**2) / 2  # Error propagation

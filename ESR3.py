@@ -6,7 +6,7 @@ from wlinreg import *
 '''Day 2 calibration run #1 measurements'''
 measurements = 10
 
-V_offset = np.arange(1.00, float(measurements - 1), 1)
+V_offset = np.arange([1.00, float(measurements - 1), 1])
 
 T1 = np.array([12.8, 29.8, 36.5, 48.0, 59.6, 70.7, 80.2, 90.6]) * 1e-4 #Magnetic field in tesla
 
