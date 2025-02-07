@@ -18,7 +18,7 @@ T_avg_error = np.sqrt((0.2e-4)**2 + (0.2e-4)**2) / 2  # Error propagation
 s_cal, b_cal, s_cal_std, b_cal_std = plot_regression(
     V_offset, T_avg, T_avg_error,
     'Voltage Offset (V)', 'Magnetic Field (T)',
-    'Calibration Plot 1.svg', 'Figure 1: Experiment 1 calibration measurements of voltage offset relationship with magnetic field strengths of helmholtz coils. Offset voltages going in increments of 1.00V from 1.00V to 8.00V.'
+    'Calibration Plot 1.svg', 'Figure 1: Experiment 1 calibration measurements of voltage offset relationship with magnetic field strengths of helmholtz coils. Offset voltages going in increments of 1.00V from 1.00V to 6.00V.'
 )
 
 # Resonance data (Voltage -> Frequency)
