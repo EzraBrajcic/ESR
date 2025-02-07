@@ -17,7 +17,8 @@ T_avg_error = np.sqrt((0.2e-4)**2 + (0.2e-4)**2) / 2  # Error propagation
 # Perform calibration regression
 s_cal, b_cal, s_cal_std, b_cal_std = plot_regression(
     V_offset, T_avg, T_avg_error,
-    'Voltage Offset (V)', 'Magnetic Field (T)', 'Calibration: Voltage vs Magnetic Field'
+    'Voltage Offset (V)', 'Magnetic Field (T)',
+    'Calibration Plot 1.svg', 'Figure 1: Experiment 1 calibration measurements of voltage offset relationship with magnetic field strengths of helmholtz coils. Offset voltages going in increments of 1.00V from 1.00V to 8.00V.'
 )
 
 # Resonance data (Voltage -> Frequency)
@@ -30,12 +31,18 @@ f_error = np.full(measurements + 1, 1000)  # Assume small frequency errors
 # Perform resonance regression (Frequency vs Voltage)
 s_frequency, s_frequency_intercept, s_frequency_std, _ = plot_regression(
     V_C_offset, f, f_error,
-    'Voltage (V)', 'Frequency (Hz)', 'Resonance Voltage vs Frequency'
+    'Voltage (V)', 'Frequency (Hz)',
+    'Resonance Plot 1.svg', 'Figure 2: Experiment 1 capacitor resonance voltage offset relationship with generated radio frequency going from 90MHz to 180 MHz in 10MHz increments.'
 )
 
 # Calculate effective slope s_opt = s_cal / s (Tesla/Hz)
 s_opt = s_cal / s_frequency
-s_opt_std = s_opt * np.sqrt((s_cal_std / s_cal)**2 + (s_frequency_std / s_frequency)**2)  # Error propagation
+# Propagate errors in s_opt = s_cal / s_frequency
+s_opt_std = s_opt * np.sqrt(
+    (s_cal_std / s_cal)**2 + 
+    (s_frequency_std / s_frequency)**2 +
+    (np.mean(V_C_offset_error)**2 / np.mean(V_C_offset)**2)  # Voltage error term
+)
 
 # Calculate g-factor and uncertainty
 h = 6.626e-34  # Planck's constant

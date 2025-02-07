@@ -32,9 +32,8 @@ T_avg_error = np.sqrt(T1_error**2 + T2_error**2) / 2  # Correct error propagatio
 # Perform weighted linear regression for the calibration data
 s_cal, b_cal, s_cal_std, b_cal_std = plot_regression(
     V_offset, T_avg, T_avg_error,
-    xlabel='Voltage Offset (V)',
-    ylabel='Magnetic Field Strength (T)',
-    title='Voltage Offset VS Magnetic Field Strength'
+    'Voltage Offset (V)', 'Magnetic Field (T)',
+    'Calibration Plot 2.svg', 'Figure 3: Experiment 2 calibration measurements of voltage offset relationship with magnetic field strengths of helmholtz coils. Offset voltages going in increments of 1.00V from 1.00V to 8.00V'
 )
 
 
@@ -94,7 +93,6 @@ for mhz, n, v, amplitude, current in freq_data:
     mhz_data.append(mhz)
     v_data.append(final_x)
 
-plt.title('Voltage offset sweep for each frequency')
 plt.xlabel('Voltage (V)')
 plt.ylabel('Amplitude')
 
@@ -102,7 +100,11 @@ plt.plot([0, 10], [0,0], linestyle='--')
 
 plt.legend()
 
+# Add caption below the figure
+plt.figtext(0.5, -0.1, 'Figure 4: Experiment 2 voltage offset sweep for each frequency, with resonance points. Voltage offset ranges from 1.00V to 10.00V over 3 minutes and frequencies sweep from 90MHz to 180Hz in 10MHz increments', wrap = True, horizontalalignment = 'center', fontsize = 8)
+plt.savefig('Resonance Intercepts.svg' , bbox_inches = 'tight', dpi=600)
 plt.show()
+plt.close()
 
 # Perform weighted linear regression on the extracted data
 mhz_data = np.array(mhz_data) * 1e6
@@ -113,12 +115,18 @@ v_data_error = np.full_like(v_data, 0.01)  # Assuming a constant error of ±0.01
 # Perform resonance regression (Frequency vs Voltage)
 s_frequency, s_frequency_intercept, s_frequency_std, _ = plot_regression(
     v_data, mhz_data, v_data_error,
-    'Voltage (V)', 'Frequency (Hz)', 'Resonance Voltage vs Frequency'
+    'Voltage (V)', 'Frequency (Hz)',
+    'Resonance Plot 2.svg', 'Figure 5: Experiment 2 capacitor resonance voltage offset relationship with generated radio frequency going from 90MHz to 180 MHz in 10MHz increments.'
 )
 
 # Calculate effective slope s_opt = s_cal / s (Tesla/Hz)
 s_opt = s_cal / s_frequency
-s_opt_std = s_opt * np.sqrt((s_cal_std / s_cal)**2 + (s_frequency_std / s_frequency)**2)  # Error propagation
+# Propagate errors in s_opt = s_cal / s_frequency
+s_opt_std = s_opt * np.sqrt(
+    (s_cal_std / s_cal)**2 + 
+    (s_frequency_std / s_frequency)**2 +
+    (np.mean(v_data_error)**2 / np.mean(v_data)**2)  # Voltage error term
+)
 
 # Calculate g-factor and uncertainty
 h = 6.626e-34  # Planck's constant
